@@ -1,27 +1,45 @@
-# WdFab
+# wd-fab engine
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.2.
 
-## Development server
+## Typescript Model
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+forms.ts --  FORMS object is an array of Form object.  Each Form represents a domain assessed.
+form.ts -- Form is a collection of items/questions that make up the assessment for a specific domain.
+item.ts -- Item represents a specific question that is presented to the user to respond to.
+map.ts -- Map represents the question options that an user selects. (all question in wd-fab are multiple choice)
+response.ts -- Response represents the answer an user provides to a question.
+result.ts -- Result represents the score of a response.  Results are cumulative, so the last result of a form is the final 'score'.
+assessment.ts -- Assessment is a state management object for an user during the assessment.
+demographic.ts -- Demographic is pre-requisite user-specific data that is used by the wd-fab engine to determine which domains and items should be filter out of an assessment.
 
-## Code scaffolding
+## Engine
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+cat.service.ts -- The main Engine implementation has a dependency on irt.service.ts
+irt.service.ts -- Item Response Theory algorithm implementation used for item selection and scoring algorithms.
 
-## Build
+## wd-fab engine workflow
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+1.) calulate exlusion_code.  Can use CatService.set_exlusion_code(demo:Demographic)
+2.) CatService.setForms(); // filter out items based on exlusion_code
+3.) CatService.initializeAssessments(); // randomizes assessment domains and initializes assessment.
+4.) CatService.getNextItemSync(); // returns a question/item that is presented to the user.
+	Note: if returns null, call CatService.getAssessments() to get the next form/domain.
+	if getAssessments returns an empty array. Assessment is done and call CatService.getResults() to get all the scores.
 
-## Running unit tests
+5.) if CatService.getNextItemSync() returns an item, then display to user and capture user response.  
+	Create a Response object and call CatService.saveResponse(Response) and Result object CatService.calculateEstimateSync(). 
+	After Result object is created, then save it to the CatService.saveResults(Result)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+6.) Repeat process by going to step 4.)
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Test Harness
 
-## Further help
+The angular components that are used for demonstrating the wd-fab engine are:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Demographics component demonstrates workflow steps 1 - 3.
+Intro component is a transition step with no logic.
+Assessment component demonstrates the user interaction through the assessment. steps 4 - 6.
+
+

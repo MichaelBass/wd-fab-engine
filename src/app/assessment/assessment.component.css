@@ -1,0 +1,23 @@
+.maps {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+}
+
+.maps li {
+  cursor: pointer;
+  position: relative;
+  left: 0;
+  /* background-color: #EEE; */
+  margin: .5em;
+  padding: .3em 0;
+}
+
+.maps li:hover {
+  color: #607D8B; 
+  background-color: #DDD;
+}
+
+.selected {
+  background-color: #CFD8DC !important;
+}

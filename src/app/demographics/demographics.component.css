@@ -1,0 +1,22 @@
+
+.label-default2{
+  text-align: left;
+  font-size: 14pt;
+    /*background-color: #e0e0eb !important;*/
+  padding: 0em 1em 0em 1em;
+}
+
+.section {
+  text-align: left;
+  list-style-type: none;
+  padding: 0em 1em 1em 1em;
+}
+
+.answerset {
+  padding: 0em 0 0em 1em;
+}
+
+.choices {
+  padding: 0em 2em 0em 0em;
+}
+
