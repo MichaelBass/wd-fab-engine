@@ -169,9 +169,9 @@ export class CatService {
         	phy.splice(3,1);
       	}
 	    
-	    if(this.demo.wc == 1){
-    	  phy.splice(0,1);
-	    }  
+	    // if(this.demo.wc == 1){
+    	//   phy.splice(0,1);
+	    // }  
 	    
 	  	var phy_currentIndex = phy.length;
 		var phy_temporaryValue;
