@@ -7,6 +7,7 @@ import { Form } from './form';
 import { Assessment } from './assessment';
 import { Response } from './response';
 import { Result } from './result';
+import { Score } from './score';
 import { Demographic } from './demographic';
 import { IRTService } from './irt.service';
 
@@ -27,6 +28,80 @@ export class CatService {
 
 
 	constructor(private irt: IRTService) {}
+
+
+	getScores(): Array<Score>{
+
+		//var myLabels = new Array();
+		//var myData = new Array();
+
+		//var myLabels2 = new Array();
+		//var myData2 = new Array();
+
+		var myScores = new Array<Score>();
+
+		for (let assessment of this.assessments) {
+
+          //if(assessment.Domain === "Cognition & Communication" || assessment.Domain === "Resilience & Sociability" || assessment.Domain === "Self-Regulation" || assessment.Domain === "Mood & Emotions"){
+          //  myLabels.push(assessment.Domain);
+          //}
+
+          //if(assessment.Domain === "Basic Mobility" || assessment.Domain === "Upper Body Function" || assessment.Domain === "Fine Motor Function" || assessment.Domain === "Community Mobility" || assessment.Domain === "Wheelchair"){
+          // myLabels2.push(assessment.Domain);
+          //}
+
+          let filtered_results = this.results.filter((a) => a.oid === assessment.Domain);
+          let _result = filtered_results[filtered_results.length -1];
+          let score = "N/A";
+
+          if (typeof _result === "undefined"){
+          }else{
+
+            switch(assessment.Domain) {
+              case "Cognition & Communication":
+                score = (50 + Math.round( (_result.score - 0.114)/3.817 * 10)/10 * 10 ).toString();
+                break;
+              case "Resilience & Sociability":
+                score = (50 + Math.round( (_result.score - 2.12)/2.33 * 10)/10 * 10 ).toString();
+                break;
+              case "Self-Regulation":
+                score = (50 + Math.round( (_result.score - 0.556)/1.854 * 10)/10 * 10 ).toString();
+                break;                            
+              case "Mood & Emotions":
+                score = (50 + Math.round( (_result.score)/1.58 * 10)/10 * 10 ).toString();
+                break;
+              case "Basic Mobility":
+                score = (50 + Math.round( (_result.score - 0.338)/0.968 * 10)/10 * 10 ).toString();
+                break;
+              case "Upper Body Function":
+                score = (50 + Math.round( (_result.score - 0.788)/2.293 * 10)/10 * 10 ).toString();
+                break;
+              case "Fine Motor Function":
+                score = (50 + Math.round( (_result.score - 0.113)/0.788 * 10)/10 * 10 ).toString();
+                break;
+              case "Community Mobility":
+                score = (50 + Math.round( (_result.score - 0.329)/1.535 * 10)/10 * 10 ).toString();
+                break;
+              case "Wheelchair":
+                score = (50 + Math.round( (_result.score - 0.329)/1.535 * 10)/10 * 10 ).toString();
+                break;              
+              default:
+                score = "N/A";
+            }
+
+            //score = (50 + Math.round(_result.score * 10)/10 * 10 ).toString();
+
+          }
+         
+        let _score = new Score();
+        _score.domain = assessment.Domain;
+        _score.norm_score = score;
+        myScores.push(_score);
+
+		}
+
+		return myScores;
+	}
 
   	set_exlusion_code(demo:Demographic){
 
@@ -91,6 +166,9 @@ export class CatService {
   	return this.results;
   }
 
+  getResponses(): Array<Response> {
+  	return this.responses;
+  }
   getForms(): Array<Form> {
   	return this.forms;
   }

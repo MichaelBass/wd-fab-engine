@@ -47,6 +47,8 @@ export class AssessmentComponent implements OnInit {
 		    	this.getNextItem();
 		    } else{
 		    	console.log(this.catService.getResults());
+		    	console.log(this.catService.getResponses());
+		    	console.log(this.catService.getScores());
 		    }
 			
 		}
